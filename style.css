@@ -1,8 +1,6 @@
 body {
   margin: 0;
   font-family: Arial;
-  background: #121212;
-  color: #e0e0e0;
 }
 
 /* Sidebar */
@@ -10,17 +8,14 @@ body {
   position: fixed;
   width: 220px;
   height: 100%;
-  background: #1e1e1e;
+  background: #000;   /* pure black */
+  color: white;
   padding: 20px;
 }
 
-.sidebar h2 {
-  color: #00ff9c;
-}
-
 .sidebar a {
+  color: #ccc;
   display: block;
-  color: #bbb;
   margin: 12px 0;
   text-decoration: none;
 }
@@ -33,9 +28,7 @@ body {
 .content {
   margin-left: 240px;
   padding: 40px;
-  max-width: 900px;
-}
-
-h1 {
-  font-size: 36px;
+  background: white;   /* white content */
+  color: black;
+  min-height: 100vh;
 }
