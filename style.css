@@ -12,6 +12,10 @@ body {
   color: white;
   padding: 20px;
 }
+.logo {
+  width: 150px;
+  margin-bottom: 20px;
+}
 
 .sidebar a {
   color: #ccc;
