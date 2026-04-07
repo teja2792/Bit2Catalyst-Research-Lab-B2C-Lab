@@ -32,7 +32,7 @@ body {
 .content {
   margin-left: 240px;
   padding: 40px;
-  background: white;   /* white content */
-  color: black;
+  background: #f5f5f5;   /* soft gray (better than white) */
+  color: #222;
   min-height: 100vh;
 }
