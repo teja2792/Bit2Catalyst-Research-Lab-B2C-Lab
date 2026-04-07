@@ -36,3 +36,8 @@ body {
   color: #222;
   min-height: 100vh;
 }
+.logo {
+  width: 120px;
+  display: block;
+  margin: 0 auto 10px auto;
+}
