@@ -41,3 +41,13 @@ body {
   display: block;
   margin: 0 auto 10px auto;
 }
+.sidebar a {
+  padding: 8px;
+  border-radius: 5px;
+  transition: 0.2s;
+}
+
+.sidebar a:hover {
+  background: #111;
+  color: #00ff9c;
+}
