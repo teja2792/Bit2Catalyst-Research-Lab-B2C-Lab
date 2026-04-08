@@ -54,4 +54,21 @@ body {
   color: black !important;
 }
   color: #00ff9c;
+  .content {
+  max-width: 900px;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+p {
+  line-height: 1.7;
+}
+  .card {
+  background: white;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+}
 }
