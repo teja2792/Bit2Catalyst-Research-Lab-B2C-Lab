@@ -7,3 +7,15 @@
 <li>Electrochemical Potential Conversions</li>
 <li>Nernst Equation Calculator (coming soon)</li>
 </ul>
+<input id="input" type="number" placeholder="Energy (eV)">
+<button onclick="convert()">Convert</button>
+<p id="output"></p>
+
+<script>
+function convert() {
+  let e = document.getElementById("input").value;
+  let wavelength = 1240 / e;
+  document.getElementById("output").innerText =
+    "Wavelength (nm): " + wavelength.toFixed(2);
+}
+</script>
