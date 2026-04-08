@@ -1,37 +1,63 @@
+<body>
+
 <div class="sidebar">
-  <a href="index.html">
-  <img src="logo.png" class="logo">
-    <link rel="icon" href="logo.png">
-</a>
+  <a href="index.html"><img src="logo.png" class="logo"></a>
   <h2>B2C Lab</h2>
-<a href="index.html">Home</a>
-<a href="research.html">Research</a>
-<a href="people.html">People</a>
-<a href="publications.html">Publications</a>
-<a href="conversions.html">Unit Conversions</a>
-<a href="resources.html">Resources</a>
-<a href="join.html">Join Us</a>
-<a href="theses.html">Theses</a>
+
+  <a href="index.html">Home</a>
+  <a href="research.html">Research</a>
+  <a href="people.html">People</a>
+  <a href="publications.html">Publications</a>
+  <a href="conversions.html">Unit Conversions</a>
+  <a href="resources.html">Resources</a>
+  <a href="join.html">Join Us</a>
+  <a href="theses.html">Theses</a>
 </div>
+</div>
+
+<div class="content">
 <h1>Unit Conversions</h1>
+<p>Interactive Energy ↔ Wavelength ↔ Frequency converter</p>
 
-
-<p>Interactive tools for energy, electrochemistry, and materials science.</p>
-
-<ul>
-<li>Energy ↔ Wavelength ↔ Frequency</li>
-<li>Electrochemical Potential Conversions</li>
-<li>Nernst Equation Calculator (coming soon)</li>
-</ul>
-<input id="input" type="number" placeholder="Energy (eV)">
-<button onclick="convert()">Convert</button>
-<p id="output"></p>
+<div class="card">
+  <input id="eV" placeholder="eV" oninput="convert('eV')">
+  <input id="meV" placeholder="meV" oninput="convert('meV')">
+  <input id="nm" placeholder="nm" oninput="convert('nm')">
+  <input id="um" placeholder="µm" oninput="convert('um')">
+  <input id="cm" placeholder="cm⁻¹" oninput="convert('cm')">
+  <input id="THz" placeholder="THz" oninput="convert('THz')">
+  <input id="fs" placeholder="fs" oninput="convert('fs')">
+  <input id="ps" placeholder="ps" oninput="convert('ps')">
+</div>
 
 <script>
-function convert() {
-  let e = document.getElementById("input").value;
-  let wavelength = 1240 / e;
-  document.getElementById("output").innerText =
-    "Wavelength (nm): " + wavelength.toFixed(2);
+function convert(from) {
+  let eV;
+
+  if (from === "eV") eV = val("eV");
+  if (from === "meV") eV = val("meV") / 1000;
+  if (from === "nm") eV = 1240 / val("nm");
+  if (from === "um") eV = 1.24 / val("um");
+  if (from === "cm") eV = val("cm") / 8065;
+  if (from === "THz") eV = val("THz") * 4.1357;
+  if (from === "fs") eV = 4.1357 / val("fs");
+  if (from === "ps") eV = 4.1357 / (val("ps") * 1000);
+
+  if (!eV || isNaN(eV)) return;
+
+  set("eV", eV);
+  set("meV", eV * 1000);
+  set("nm", 1240 / eV);
+  set("um", 1.24 / eV);
+  set("cm", eV * 8065);
+  set("THz", eV / 4.1357);
+  set("fs", 4.1357 / eV);
+  set("ps", (4.1357 / eV) / 1000);
 }
+
+function val(id){ return parseFloat(document.getElementById(id).value); }
+function set(id,v){ document.getElementById(id).value = v.toFixed(5); }
 </script>
+</div>
+
+</body>
