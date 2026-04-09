@@ -49,13 +49,7 @@ body {
 
 .sidebar a:hover {
   background: #111;
-  .active {
-  background: #00ff9c;
-  color: black !important;
-}
   color: #00ff9c;
-  .content {
-  max-width: 900px;
 }
 
 h1 {
