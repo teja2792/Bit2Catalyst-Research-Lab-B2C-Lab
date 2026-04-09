@@ -100,3 +100,17 @@ input {
   grid-template-columns: 1fr;
   gap: 12px;
 }
+  <div class="tabs">
+  <button onclick="openTab('nano')">Nano Optics</button>
+  <button onclick="openTab('electro')">Electrochemistry</button>
+  <button onclick="openTab('materials')">Advanced Materials</button>
+  <button onclick="openTab('spectral')">Spectral Table</button>
+</div>
+
+<div id="nano" class="tab-content">Energy Converter Here</div>
+<div id="electro" class="tab-content">Electrochem tools</div>
+<div id="materials" class="tab-content">Materials tools</div>
+<div id="spectral" class="tab-content">
+  <h3>Spectral Table (UV/Vis)</h3>
+  <p>Use standard spectral ranges (UV–Vis–IR)</p>
+</div>
