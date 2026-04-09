@@ -1,5 +1,6 @@
 <body>
 
+<!-- Sidebar (same as home) -->
 <div class="sidebar">
   <a href="index.html"><img src="logo.png" class="logo"></a>
   <h2>B2C Lab</h2>
@@ -13,59 +14,34 @@
   <a href="join.html">Join Us</a>
   <a href="theses.html">Theses</a>
 </div>
-</div>
 
+<!-- EVERYTHING ELSE INSIDE CONTENT -->
 <div class="content">
-    <div class="tabs">
-  <button onclick="openTab('nano')">Nano Optics</button>
-  <button onclick="openTab('electro')">Electrochemistry</button>
-  <button onclick="openTab('materials')">Advanced Materials</button>
-  <button onclick="openTab('spectral')">Spectral Table</button>
-</div>
 
-<div id="nano" class="tab-content">Energy Converter Here</div>
-<div id="electro" class="tab-content">Electrochem tools</div>
-<div id="materials" class="tab-content">Materials tools</div>
-<div id="spectral" class="tab-content">
-  <h3>Spectral Table (UV/Vis)</h3>
-  <p>Use standard spectral ranges (UV–Vis–IR)</p>
-</div>
-<h1>Unit Conversions</h1>
-<p>Interactive Energy ↔ Wavelength ↔ Frequency converter</p>
-
-<div class="card">
-
-  <!-- Each row = input + unit -->
-  <div class="row">
-    <input id="eV" oninput="convert('eV')"><span>eV</span>
+  <!-- Tabs -->
+  <div class="tabs">
+    <button>Nano Optics</button>
+    <button>Electrochemistry</button>
+    <button>Advanced Materials</button>
+    <button>Spectral Table</button>
   </div>
 
-  <div class="row">
-    <input id="meV" oninput="convert('meV')"><span>meV</span>
-  </div>
+  <h1>Unit Conversions</h1>
 
-  <div class="row">
-    <input id="nm" oninput="convert('nm')"><span>nm</span>
-  </div>
+  <p>Interactive Energy ↔ Wavelength ↔ Frequency converter</p>
 
-  <div class="row">
-    <input id="um" oninput="convert('um')"><span>µm</span>
-  </div>
+  <!-- Converter -->
+  <div class="card">
 
-  <div class="row">
-    <input id="cm" oninput="convert('cm')"><span>cm⁻¹</span>
-  </div>
+    <div class="row"><input id="eV" oninput="convert('eV')"><span>eV</span></div>
+    <div class="row"><input id="meV" oninput="convert('meV')"><span>meV</span></div>
+    <div class="row"><input id="nm" oninput="convert('nm')"><span>nm</span></div>
+    <div class="row"><input id="um" oninput="convert('um')"><span>µm</span></div>
+    <div class="row"><input id="cm" oninput="convert('cm')"><span>cm⁻¹</span></div>
+    <div class="row"><input id="THz" oninput="convert('THz')"><span>THz</span></div>
+    <div class="row"><input id="fs" oninput="convert('fs')"><span>fs</span></div>
+    <div class="row"><input id="ps" oninput="convert('ps')"><span>ps</span></div>
 
-  <div class="row">
-    <input id="THz" oninput="convert('THz')"><span>THz</span>
-  </div>
-
-  <div class="row">
-    <input id="fs" oninput="convert('fs')"><span>fs</span>
-  </div>
-
-  <div class="row">
-    <input id="ps" oninput="convert('ps')"><span>ps</span>
   </div>
 
 </div>
@@ -98,6 +74,5 @@ function convert(from) {
 function val(id){ return parseFloat(document.getElementById(id).value); }
 function set(id,v){ document.getElementById(id).value = v.toFixed(5); }
 </script>
-</div>
 
 </body>
