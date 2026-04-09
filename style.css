@@ -87,3 +87,22 @@ input {
   border-radius: 6px;
   border: 1px solid #ccc;
 }
+/* Fix rows: input + unit side by side */
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Make unit text clean */
+.row span {
+  min-width: 50px;
+  font-weight: bold;
+}
+
+/* Improve card layout */
+.card {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
