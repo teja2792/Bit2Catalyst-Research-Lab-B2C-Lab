@@ -34,14 +34,40 @@
 <p>Interactive Energy ↔ Wavelength ↔ Frequency converter</p>
 
 <div class="card">
-  <input id="eV" placeholder="eV" oninput="convert('eV')">
-  <input id="meV" placeholder="meV" oninput="convert('meV')">
-  <input id="nm" placeholder="nm" oninput="convert('nm')">
-  <input id="um" placeholder="µm" oninput="convert('um')">
-  <input id="cm" placeholder="cm⁻¹" oninput="convert('cm')">
-  <input id="THz" placeholder="THz" oninput="convert('THz')">
-  <input id="fs" placeholder="fs" oninput="convert('fs')">
-  <input id="ps" placeholder="ps" oninput="convert('ps')">
+
+  <!-- Each row = input + unit -->
+  <div class="row">
+    <input id="eV" oninput="convert('eV')"><span>eV</span>
+  </div>
+
+  <div class="row">
+    <input id="meV" oninput="convert('meV')"><span>meV</span>
+  </div>
+
+  <div class="row">
+    <input id="nm" oninput="convert('nm')"><span>nm</span>
+  </div>
+
+  <div class="row">
+    <input id="um" oninput="convert('um')"><span>µm</span>
+  </div>
+
+  <div class="row">
+    <input id="cm" oninput="convert('cm')"><span>cm⁻¹</span>
+  </div>
+
+  <div class="row">
+    <input id="THz" oninput="convert('THz')"><span>THz</span>
+  </div>
+
+  <div class="row">
+    <input id="fs" oninput="convert('fs')"><span>fs</span>
+  </div>
+
+  <div class="row">
+    <input id="ps" oninput="convert('ps')"><span>ps</span>
+  </div>
+
 </div>
 
 <script>
