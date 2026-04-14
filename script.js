@@ -40,7 +40,7 @@ function animate(){
 
     ctx.beginPath();
     ctx.arc(p.x, p.y, 3, 0, Math.PI*2);
-    ctx.fillStyle = `hsl(${p.x % 360},70%,60%)`;
+    ctx.fillStyle = `hsl(${p.x % 200},70%,60%)`;
     ctx.fill();
   });
 
