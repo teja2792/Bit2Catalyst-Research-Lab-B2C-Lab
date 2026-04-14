@@ -29,7 +29,6 @@ body {
   color: #00ff9c;
 }
 
-/* Content */
 .content {
   margin-left: 240px;
   padding: 40px;
@@ -119,4 +118,9 @@ input {
   z-index: -999;            /* stronger than -1 */
   pointer-events: none;     /* 🔥 VERY IMPORTANT */
   background: #0b0f1a;
+}
+.content {
+  position: relative;
+  z-index: 10;
+  color: white;
 }
