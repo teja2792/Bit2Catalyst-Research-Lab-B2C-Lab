@@ -11,7 +11,7 @@ window.addEventListener("mousemove", e => {
   mouse.y = e.clientY;
 });
 
-let particles = Array.from({length: 100}, () => ({
+let particles = Array.from({length: 500}, () => ({
   x: Math.random()*canvas.width,
   y: Math.random()*canvas.height,
   vx: (Math.random()-0.5)*2,
