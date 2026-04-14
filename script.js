@@ -11,11 +11,14 @@ window.addEventListener("mousemove", e => {
   mouse.y = e.clientY;
 });
 
-let particles = Array.from({length: 500}, () => ({
+// 🔥 particles = electrons (e) and holes (h)
+let particles = Array.from({length: 60}, () => ({
   x: Math.random()*canvas.width,
   y: Math.random()*canvas.height,
-  vx: (Math.random()-0.5)*2,
-  vy: (Math.random()-0.5)*2
+  vx: (Math.random()-0.5)*1.5,
+  vy: (Math.random()-0.5)*1.5,
+  type: Math.random() > 0.5 ? "e" : "h",   // electron or hole
+  r: Math.random()*8 + 10                  // 🔥 bigger size
 }));
 
 function animate(){
@@ -26,10 +29,11 @@ function animate(){
     let dy = p.y - mouse.y;
     let dist = Math.sqrt(dx*dx + dy*dy);
 
+    // mouse repulsion
     if(dist < 120){
       let force = (120 - dist)/120;
-      p.vx += dx/dist * force * 0.6;
-      p.vy += dy/dist * force * 0.6;
+      p.vx += dx/dist * force * 0.5;
+      p.vy += dy/dist * force * 0.5;
     }
 
     p.vx *= 0.95;
@@ -38,10 +42,24 @@ function animate(){
     p.x += p.vx;
     p.y += p.vy;
 
+    // 🎨 COLOR + LABEL
+    if(p.type === "e"){
+      ctx.fillStyle = "orange";   // electrons
+    } else {
+      ctx.fillStyle = "deepskyblue"; // holes
+    }
+
+    // circle
     ctx.beginPath();
-    ctx.arc(p.x, p.y, 3, 0, Math.PI*2);
-    ctx.fillStyle = `hsl(${p.x % 200},70%,60%)`;
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
     ctx.fill();
+
+    // label (e / h)
+    ctx.fillStyle = "black";
+    ctx.font = `${p.r}px Arial`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(p.type, p.x, p.y);
   });
 
   requestAnimationFrame(animate);
