@@ -1,78 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit Conversions — B2C Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --sidebar-bg: #0a0a0a;
+      --sidebar-width: 230px;
+      --accent: #00c8ff;
+      --accent2: #7c3aed;
+      --accent3: #10b981;
+      --bg: #f4f4f2;
+      --surface: #ffffff;
+      --surface2: #f0f0ee;
+      --text: #1a1a1a;
+      --text2: #555;
+      --text3: #888;
+      --border: #e0e0dd;
+      --mono: 'Space Mono', monospace;
+      --sans: 'DM Sans', sans-serif;
+      --panel-left: 420px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { display: flex; min-height: 100vh; font-family: var(--sans); background: var(--bg); color: var(--text); }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: var(--sidebar-width);
+      min-height: 100vh;
+      background: var(--sidebar-bg);
+      position: fixed;
+      top: 0; left: 0;
+      display: flex; flex-direction: column;
+      padding: 28px 0 24px;
+      z-index: 100;
+      border-right: 1px solid #1a1a1a;
+    }
+    .sidebar .logo-wrap {
+      padding: 0 24px 20px;
+      border-bottom: 1px solid #1e1e1e;
+      margin-bottom: 20px;
+    }
+    .sidebar .logo-wrap img { width: 60px; height: 60px; object-fit: contain; }
+    .sidebar h2 {
+      color: #ffffff;
+      font-family: var(--sans);
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      margin-top: 8px;
+    }
+    .sidebar a {
+      display: block;
+      padding: 9px 24px;
+      color: #aaa;
+      text-decoration: none;
+      font-size: 13.5px;
+      font-weight: 400;
+      transition: color .15s, background .15s;
+      border-left: 2px solid transparent;
+    }
+    .sidebar a:hover { color: #fff; background: #161616; }
+    .sidebar a.active {
+      color: var(--accent);
+      border-left-color: var(--accent);
+      background: #111;
+      font-weight: 500;
+    }
+
+    /* ── MAIN CONTENT ── */
+    .main {
+      margin-left: var(--sidebar-width);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ── TOP HEADER BAR ── */
+    .top-bar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 36px;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      height: 52px;
+    }
+    .top-bar .page-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      margin-right: 32px;
+      white-space: nowrap;
+    }
+    .tabs { display: flex; gap: 0; }
+    .tab-btn {
+      padding: 0 20px;
+      height: 52px;
+      border: none;
+      background: none;
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text3);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: color .15s, border-color .15s;
+      white-space: nowrap;
+    }
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+    /* ── PANELS ── */
+    .panel { display: none; }
+    .panel.active { display: flex; flex-direction: column; }
+
+    /* ── CONVERTER — SEEING THEORY SPLIT ── */
+    #panel-converter {
+      flex-direction: row;
+      min-height: calc(100vh - 52px);
+    }
+    .split-left {
+      width: var(--panel-left);
+      min-width: 340px;
+      max-width: 480px;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 32px 28px;
+      overflow-y: auto;
+      flex-shrink: 0;
+    }
+    .split-right {
+      flex: 1;
+      background: var(--bg);
+      padding: 32px 28px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Left panel — inputs */
+    .section-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--text3);
+      margin: 20px 0 10px;
+    }
+    .section-label:first-child { margin-top: 0; }
+
+    .conv-row {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin-bottom: 7px;
+      overflow: hidden;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .conv-row:focus-within {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(0,200,255,0.08);
+    }
+    .conv-row input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 10px 12px;
+      font-family: var(--mono);
+      font-size: 13.5px;
+      color: var(--text);
+      outline: none;
+      min-width: 0;
+    }
+    .conv-row input::placeholder { color: #bbb; }
+    .conv-row .unit-tag {
+      padding: 0 12px;
+      background: #f7f7f5;
+      border-left: 1px solid var(--border);
+      font-family: var(--mono);
+      font-size: 11.5px;
+      color: var(--text3);
+      min-width: 70px;
+      text-align: center;
+      align-self: stretch;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Right panel — visualization */
+    .vis-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 22px;
+    }
+    .vis-card-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--text3);
+      margin-bottom: 14px;
+    }
+    .spectrum-bar {
+      width: 100%;
+      height: 36px;
+      border-radius: 4px;
+      background: linear-gradient(to right,
+        #9b00ff 0%, #4400ff 8%, #0055ff 16%, #00aaff 24%,
+        #00dddd 32%, #00ff88 40%, #aaff00 48%,
+        #ffff00 54%, #ffaa00 60%, #ff6600 68%, #ff0000 78%,
+        #cc0000 88%, #880000 100%);
+      position: relative;
+      margin-bottom: 6px;
+      border: 1px solid var(--border);
+    }
+    .spectrum-marker {
+      position: absolute;
+      top: -8px;
+      transform: translateX(-50%);
+      width: 3px;
+      background: #1a1a1a;
+      height: 52px;
+      border-radius: 2px;
+      display: none;
+    }
+    .spectrum-marker::after {
+      content: attr(data-label);
+      position: absolute;
+      bottom: -18px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text2);
+      white-space: nowrap;
+    }
+    .spectrum-labels {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--mono);
+      font-size: 9px;
+      color: var(--text3);
+      margin-top: 22px;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+    }
+    .metric-chip {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 10px 12px;
+      text-align: center;
+    }
+    .metric-chip .mval {
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .metric-chip .mlbl {
+      font-size: 10px;
+      color: var(--text3);
+      margin-top: 3px;
+    }
+
+    /* ── ELECTROCHEMISTRY SPLIT ── */
+    #panel-electro {
+      flex-direction: row;
+      min-height: calc(100vh - 52px);
+    }
+    .eq-panel {
+      width: 380px;
+      min-width: 320px;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 28px 24px;
+      overflow-y: auto;
+      flex-shrink: 0;
+    }
+    .eq-panel h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .eq-panel p {
+      font-size: 12.5px;
+      color: var(--text2);
+      line-height: 1.65;
+      margin-bottom: 16px;
+    }
+    .eq-display {
+      background: #0a0a0a;
+      border-radius: 8px;
+      padding: 16px 18px;
+      margin-bottom: 20px;
+      border: 1px solid #222;
+    }
+    .eq-display code {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--accent);
+      display: block;
+      line-height: 1.7;
+    }
+    .eq-display .eq-sub {
+      font-size: 11px;
+      color: #666;
+      margin-top: 6px;
+      font-family: var(--mono);
+    }
+
+    .ctrl-block { margin-bottom: 14px; }
+    .ctrl-block label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 12px;
+      color: var(--text2);
+      margin-bottom: 5px;
+    }
+    .ctrl-block label span {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .ctrl-block input[type=range] {
+      width: 100%;
+      height: 3px;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    .limiting-cases {
+      margin-top: 16px;
+    }
+    .case-tag {
+      display: inline-block;
+      margin: 3px 3px 3px 0;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-family: var(--mono);
+      font-size: 10px;
+      background: #f0f9ff;
+      color: #0369a1;
+      border: 1px solid #bae6fd;
+    }
+
+    .plot-panel {
+      flex: 1;
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      background: var(--bg);
+    }
+    .plot-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+    }
+    .plot-card-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--text3);
+      margin-bottom: 12px;
+    }
+    #bv-chart-wrap { position: relative; width: 100%; height: 300px; }
+    #tafel-wrap    { position: relative; width: 100%; height: 200px; }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+    .stat-box {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 10px;
+      text-align: center;
+    }
+    .stat-box .sv { font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--text); }
+    .stat-box .sl { font-size: 10px; color: var(--text3); margin-top: 2px; }
+
+    /* ── ABOUT ── */
+    #panel-about {
+      padding: 40px 48px;
+      max-width: 680px;
+    }
+    #panel-about h2 { font-size: 22px; font-weight: 600; margin-bottom: 8px; }
+    #panel-about p { font-size: 14px; color: var(--text2); line-height: 1.7; margin-bottom: 20px; }
+    .const-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .const-table th { text-align: left; font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text3); padding: 6px 12px; border-bottom: 1px solid var(--border); }
+    .const-table td { padding: 9px 12px; border-bottom: 1px solid var(--border); color: var(--text); }
+    .const-table td:last-child { font-family: var(--mono); font-size: 12px; color: #0369a1; }
+
+    /* scrollbar */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #ddd; border-radius: 3px; }
+  </style>
+</head>
 <body>
 
-<!-- Sidebar (same as home) -->
+<!-- SIDEBAR -->
 <div class="sidebar">
-  <a href="index.html"><img src="logo.png" class="logo"></a>
-  <h2>B2C Lab</h2>
-
+  <div class="logo-wrap">
+    <img src="logo.png" alt="B2C Lab logo">
+    <h2>B2C Lab</h2>
+  </div>
   <a href="index.html">Home</a>
   <a href="research.html">Research</a>
   <a href="people.html">People</a>
   <a href="publications.html">Publications</a>
-  <a href="conversions.html">Unit Conversions</a>
+  <a href="conversions.html" class="active">Unit Conversions</a>
   <a href="resources.html">Resources</a>
   <a href="join.html">Join Us</a>
   <a href="theses.html">Theses</a>
 </div>
 
-<!-- EVERYTHING ELSE INSIDE CONTENT -->
-<div class="content">
+<!-- MAIN -->
+<div class="main">
 
-  <!-- Tabs -->
-  <div class="tabs">
-    <button>Nano Optics</button>
-    <button>Electrochemistry</button>
-    <button>Advanced Materials</button>
-    <button>Spectral Table</button>
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <span class="page-title">Unit Conversions</span>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('converter', this)">Energy ↔ Wavelength</button>
+      <button class="tab-btn" onclick="switchTab('electro', this)">Electrochemistry</button>
+      <button class="tab-btn" onclick="switchTab('about', this)">About</button>
+    </div>
   </div>
 
-  <h1>Unit Conversions</h1>
+  <!-- ── CONVERTER PANEL ── -->
+  <div class="panel active" id="panel-converter">
 
-  <p>Interactive Energy ↔ Wavelength ↔ Frequency converter</p>
+    <!-- LEFT: inputs -->
+    <div class="split-left">
 
-  <!-- Converter -->
-  <div class="card">
+      <div class="section-label">Energy</div>
+      <div class="conv-row"><input id="eV"  oninput="convert('eV')"  placeholder="e.g. 1.5"><span class="unit-tag">eV</span></div>
+      <div class="conv-row"><input id="meV" oninput="convert('meV')" placeholder="0"><span class="unit-tag">meV</span></div>
+      <div class="conv-row"><input id="J"   oninput="convert('J')"   placeholder="0"><span class="unit-tag">J</span></div>
+      <div class="conv-row"><input id="kJ"  oninput="convert('kJ')"  placeholder="0"><span class="unit-tag">kJ/mol</span></div>
 
-    <div class="row"><input id="eV" oninput="convert('eV')"><span>eV</span></div>
-    <div class="row"><input id="meV" oninput="convert('meV')"><span>meV</span></div>
-    <div class="row"><input id="nm" oninput="convert('nm')"><span>nm</span></div>
-    <div class="row"><input id="um" oninput="convert('um')"><span>µm</span></div>
-    <div class="row"><input id="cm" oninput="convert('cm')"><span>cm⁻¹</span></div>
-    <div class="row"><input id="THz" oninput="convert('THz')"><span>THz</span></div>
-    <div class="row"><input id="fs" oninput="convert('fs')"><span>fs</span></div>
-    <div class="row"><input id="ps" oninput="convert('ps')"><span>ps</span></div>
+      <div class="section-label">Wavelength</div>
+      <div class="conv-row"><input id="nm"  oninput="convert('nm')"  placeholder="e.g. 800"><span class="unit-tag">nm</span></div>
+      <div class="conv-row"><input id="um"  oninput="convert('um')"  placeholder="0"><span class="unit-tag">µm</span></div>
+      <div class="conv-row"><input id="cm"  oninput="convert('cm')"  placeholder="0"><span class="unit-tag">cm⁻¹</span></div>
 
+      <div class="section-label">Frequency / Time</div>
+      <div class="conv-row"><input id="THz" oninput="convert('THz')" placeholder="0"><span class="unit-tag">THz</span></div>
+      <div class="conv-row"><input id="GHz" oninput="convert('GHz')" placeholder="0"><span class="unit-tag">GHz</span></div>
+      <div class="conv-row"><input id="fs"  oninput="convert('fs')"  placeholder="0"><span class="unit-tag">fs</span></div>
+      <div class="conv-row"><input id="ps"  oninput="convert('ps')"  placeholder="0"><span class="unit-tag">ps</span></div>
+
+      <div class="section-label">Temperature</div>
+      <div class="conv-row"><input id="K"   oninput="convert('K')"   value="298.15"><span class="unit-tag">K</span></div>
+      <div class="conv-row"><input id="C"   oninput="convert('C')"   value="25.00"><span class="unit-tag">°C</span></div>
+      <div class="conv-row"><input id="Fah" oninput="convert('Fah')" value="77.00"><span class="unit-tag">°F</span></div>
+      <div class="conv-row"><input id="kT"  oninput="convert('kT')"  value="0.0257"><span class="unit-tag">k_BT (eV)</span></div>
+
+      <div style="margin-top:20px;font-size:10.5px;color:var(--text3);line-height:1.7">
+        h = 4.1357 × 10⁻¹⁵ eV·s &nbsp;|&nbsp; c = 2.998 × 10¹⁷ nm/s<br>
+        k_B = 8.617 × 10⁻⁵ eV/K &nbsp;|&nbsp; N_A = 6.022 × 10²³
+      </div>
+    </div>
+
+    <!-- RIGHT: visualisation -->
+    <div class="split-right">
+
+      <!-- Spectral visualizer -->
+      <div class="vis-card">
+        <div class="vis-card-title">Electromagnetic Spectrum Locator</div>
+        <div class="spectrum-bar" id="spec-bar">
+          <div class="spectrum-marker" id="spec-marker"></div>
+        </div>
+        <div class="spectrum-labels">
+          <span>γ-ray<br>&lt;0.01nm</span>
+          <span>X-ray<br>0.01–10nm</span>
+          <span>UV<br>10–400nm</span>
+          <span>Vis<br>400–700nm</span>
+          <span>NIR<br>700–2500nm</span>
+          <span>IR<br>2.5–25µm</span>
+          <span>THz<br>&gt;25µm</span>
+        </div>
+      </div>
+
+      <!-- Key metrics chips -->
+      <div class="vis-card">
+        <div class="vis-card-title">Current Values</div>
+        <div class="metric-grid">
+          <div class="metric-chip"><div class="mval" id="d-eV">—</div><div class="mlbl">eV</div></div>
+          <div class="metric-chip"><div class="mval" id="d-nm">—</div><div class="mlbl">nm</div></div>
+          <div class="metric-chip"><div class="mval" id="d-THz">—</div><div class="mlbl">THz</div></div>
+          <div class="metric-chip"><div class="mval" id="d-cm">—</div><div class="mlbl">cm⁻¹</div></div>
+          <div class="metric-chip"><div class="mval" id="d-fs">—</div><div class="mlbl">fs period</div></div>
+          <div class="metric-chip"><div class="mval" id="d-kT">—</div><div class="mlbl">k_BT (eV)</div></div>
+        </div>
+      </div>
+
+      <!-- Photon energy bar chart -->
+      <div class="vis-card">
+        <div class="vis-card-title">Energy comparison — common spectroscopy wavelengths</div>
+        <div style="position:relative;width:100%;height:180px">
+          <canvas id="energy-chart" role="img" aria-label="Bar chart comparing photon energies at common spectroscopy wavelengths">Photon energies at 405, 532, 633, 785, 1064 nm</canvas>
+        </div>
+      </div>
+
+    </div>
   </div>
 
-</div>
+  <!-- ── ELECTROCHEMISTRY PANEL ── -->
+  <div class="panel" id="panel-electro">
 
+    <!-- LEFT: equation + controls -->
+    <div class="eq-panel">
+      <h3>Butler-Volmer Equation</h3>
+      <p>The fundamental equation relating electrode current density to overpotential at an electrochemical interface.</p>
+
+      <div class="eq-display">
+        <code>j = j₀ · [ exp(αFη/RT)</code>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;− exp(−(1−α)Fη/RT) ]</code>
+        <div class="eq-sub">F = 96485 C/mol &nbsp;|&nbsp; R = 8.314 J/mol·K</div>
+      </div>
+
+      <div class="ctrl-block">
+        <label>Exchange current density j₀ (A/m²) <span id="lj0">0.01</span></label>
+        <input type="range" id="sl-j0" min="-4" max="1" step="0.1" value="-2" oninput="updateBV()">
+      </div>
+      <div class="ctrl-block">
+        <label>Transfer coefficient α <span id="lalpha">0.50</span></label>
+        <input type="range" id="sl-alpha" min="0.1" max="0.9" step="0.01" value="0.5" oninput="updateBV()">
+      </div>
+      <div class="ctrl-block">
+        <label>Temperature T (K) <span id="lT">298</span></label>
+        <input type="range" id="sl-T" min="200" max="500" step="5" value="298" oninput="updateBV()">
+      </div>
+      <div class="ctrl-block">
+        <label>Overpotential range ±η (V) <span id="leta">0.40</span></label>
+        <input type="range" id="sl-eta" min="0.1" max="1.0" step="0.05" value="0.4" oninput="updateBV()">
+      </div>
+
+      <div class="limiting-cases">
+        <div class="section-label">Limiting cases</div>
+        <span class="case-tag">Low η → linear: j ≈ j₀Fη/RT</span>
+        <span class="case-tag">High η (anodic): Tafel j ≈ j₀exp(αFη/RT)</span>
+        <span class="case-tag">High η (cathodic): j ≈ −j₀exp(−(1−α)Fη/RT)</span>
+      </div>
+    </div>
+
+    <!-- RIGHT: plots -->
+    <div class="plot-panel">
+
+      <div class="stat-row">
+        <div class="stat-box"><div class="sv" id="sv-j0">0.01</div><div class="sl">j₀ (A/m²)</div></div>
+        <div class="stat-box"><div class="sv" id="sv-ba">120</div><div class="sl">Anodic Tafel (mV/dec)</div></div>
+        <div class="stat-box"><div class="sv" id="sv-bc">120</div><div class="sl">Cathodic Tafel (mV/dec)</div></div>
+        <div class="stat-box"><div class="sv" id="sv-rct">—</div><div class="sl">R_ct (Ω·m²)</div></div>
+      </div>
+
+      <div class="plot-card">
+        <div class="plot-card-title">Current density j vs overpotential η</div>
+        <div id="bv-chart-wrap">
+          <canvas id="bv-chart" role="img" aria-label="Butler-Volmer current density vs overpotential">BV j vs η</canvas>
+        </div>
+      </div>
+
+      <div class="plot-card">
+        <div class="plot-card-title">Tafel plot — log|j| vs η</div>
+        <div id="tafel-wrap">
+          <canvas id="tafel-chart" role="img" aria-label="Tafel plot log current vs overpotential">Tafel plot</canvas>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── ABOUT PANEL ── -->
+  <div class="panel" id="panel-about">
+    <h2>About this tool</h2>
+    <p>Interactive scientific computation platform built for the Bit2Catalyst Research Lab (B2C Lab). Designed for nano optics, electrochemistry, and advanced materials research.</p>
+
+    <div class="section-label" style="margin:0 0 12px">Physical constants used</div>
+    <table class="const-table">
+      <thead><tr><th>Symbol</th><th>Quantity</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td>h</td><td>Planck constant</td><td>4.13566743 × 10⁻¹⁵ eV·s</td></tr>
+        <tr><td>c</td><td>Speed of light</td><td>2.99792458 × 10¹⁷ nm/s</td></tr>
+        <tr><td>k_B</td><td>Boltzmann constant</td><td>8.617333 × 10⁻⁵ eV/K</td></tr>
+        <tr><td>N_A</td><td>Avogadro's number</td><td>6.02214076 × 10²³ mol⁻¹</td></tr>
+        <tr><td>F</td><td>Faraday constant</td><td>96485 C/mol</td></tr>
+        <tr><td>R</td><td>Gas constant</td><td>8.31446 J/mol·K</td></tr>
+        <tr><td>e</td><td>Elementary charge</td><td>1.602176634 × 10⁻¹⁹ J/eV</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div><!-- /main -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
-function convert(from) {
-  let eV;
-
-  if (from === "eV") eV = val("eV");
-  if (from === "meV") eV = val("meV") / 1000;
-  if (from === "nm") eV = 1240 / val("nm");
-  if (from === "um") eV = 1.24 / val("um");
-  if (from === "cm") eV = val("cm") / 8065;
-  if (from === "THz") eV = val("THz") * 4.1357;
-  if (from === "fs") eV = 4.1357 / val("fs");
-  if (from === "ps") eV = 4.1357 / (val("ps") * 1000);
-
-  if (!eV || isNaN(eV)) return;
-
-  set("eV", eV);
-  set("meV", eV * 1000);
-  set("nm", 1240 / eV);
-  set("um", 1.24 / eV);
-  set("cm", eV * 8065);
-  set("THz", eV / 4.1357);
-  set("fs", 4.1357 / eV);
-  set("ps", (4.1357 / eV) / 1000);
+/* ────────────── TABS ────────────── */
+function switchTab(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+  if (id === 'electro') setTimeout(buildBV, 60);
+  if (id === 'converter') setTimeout(buildEnergyChart, 60);
 }
 
-function val(id){ return parseFloat(document.getElementById(id).value); }
-function set(id,v){ document.getElementById(id).value = v.toFixed(5); }
-</script>
+/* ────────────── CONSTANTS ────────────── */
+const h   = 4.13566743e-15;
+const c   = 2.99792458e17;
+const kB  = 8.617333e-5;
+const NA  = 6.02214076e23;
+const eV2J = 1.602176634e-19;
+const F_const = 96485, R_const = 8.31446;
 
+/* ────────────── FORMAT ────────────── */
+function fmt(v, dp) {
+  if (!isFinite(v) || isNaN(v)) return '';
+  const a = Math.abs(v);
+  if (a === 0) return '0';
+  if (dp !== undefined) return v.toFixed(dp);
+  if (a >= 1e6 || (a < 1e-3 && a > 0)) return v.toExponential(3);
+  if (a >= 100) return +v.toFixed(2)+'';
+  if (a >= 1)   return +v.toFixed(4)+'';
+  return +v.toFixed(5)+'';
+}
+function shortFmt(v) {
+  if (!isFinite(v)||isNaN(v)) return '—';
+  const a = Math.abs(v);
+  if (a>=1e6||(a<0.001&&a>0)) return v.toExponential(2);
+  if (a>=100) return v.toFixed(1);
+  if (a>=1)   return v.toFixed(3);
+  return v.toFixed(4);
+}
+
+function getVal(id) { return parseFloat(document.getElementById(id).value); }
+function setVal(id, v) {
+  const el = document.getElementById(id);
+  if (document.activeElement !== el) el.value = fmt(v);
+}
+
+/* ────────────── CONVERTER ────────────── */
+function convert(from) {
+  let eV;
+  if (from==='eV')  eV = getVal('eV');
+  if (from==='meV') eV = getVal('meV')/1000;
+  if (from==='J')   eV = getVal('J')/eV2J;
+  if (from==='kJ')  eV = getVal('kJ')*1000/(NA*eV2J);
+  if (from==='nm')  eV = 1240/getVal('nm');
+  if (from==='um')  eV = 1.24/getVal('um');
+  if (from==='cm')  eV = getVal('cm')/8065.54;
+  if (from==='THz') eV = getVal('THz')*h*1e12;
+  if (from==='GHz') eV = getVal('GHz')*h*1e9;
+  if (from==='fs')  eV = h/getVal('fs')*1e15;
+  if (from==='ps')  eV = h/getVal('ps')*1e12;
+
+  if (from==='K') {
+    const K=getVal('K');
+    setVal('C', K-273.15); setVal('Fah',(K-273.15)*9/5+32); setVal('kT',kB*K);
+    updateDisplays(null,K); return;
+  }
+  if (from==='C') {
+    const K=getVal('C')+273.15;
+    setVal('K',K); setVal('Fah',getVal('C')*9/5+32); setVal('kT',kB*K);
+    updateDisplays(null,K); return;
+  }
+  if (from==='Fah') {
+    const K=(getVal('Fah')-32)*5/9+273.15;
+    setVal('K',K); setVal('C',K-273.15); setVal('kT',kB*K);
+    updateDisplays(null,K); return;
+  }
+  if (from==='kT') {
+    const K=getVal('kT')/kB;
+    setVal('K',K); setVal('C',K-273.15); setVal('Fah',(K-273.15)*9/5+32);
+    updateDisplays(null,K); return;
+  }
+
+  if (!eV||isNaN(eV)||!isFinite(eV)) return;
+  if(from!=='eV')  setVal('eV',eV);
+  if(from!=='meV') setVal('meV',eV*1000);
+  if(from!=='J')   setVal('J',eV*eV2J);
+  if(from!=='kJ')  setVal('kJ',eV*NA*eV2J/1000);
+  if(from!=='nm')  setVal('nm',1240/eV);
+  if(from!=='um')  setVal('um',1.24/eV);
+  if(from!=='cm')  setVal('cm',eV*8065.54);
+  if(from!=='THz') setVal('THz',eV/(h*1e12));
+  if(from!=='GHz') setVal('GHz',eV/(h*1e9));
+  if(from!=='fs')  setVal('fs',h/eV*1e15);
+  if(from!=='ps')  setVal('ps',h/eV*1e12);
+  updateDisplays(eV, null);
+}
+
+function updateDisplays(eV, K) {
+  if (eV && isFinite(eV)) {
+    document.getElementById('d-eV').textContent  = shortFmt(eV);
+    document.getElementById('d-nm').textContent  = shortFmt(1240/eV);
+    document.getElementById('d-THz').textContent = shortFmt(eV/(h*1e12));
+    document.getElementById('d-cm').textContent  = shortFmt(eV*8065.54);
+    document.getElementById('d-fs').textContent  = shortFmt(h/eV*1e15);
+    updateSpectrum(1240/eV);
+  }
+  if (K && isFinite(K)) {
+    document.getElementById('d-kT').textContent = shortFmt(kB*K);
+  }
+}
+
+// Map nm to spectrum bar position (log scale 0.01 to 1e6 nm)
+function updateSpectrum(nm_val) {
+  const marker = document.getElementById('spec-marker');
+  if (!nm_val || nm_val<=0 || !isFinite(nm_val)) { marker.style.display='none'; return; }
+  const logMin = Math.log10(0.01), logMax = Math.log10(1e6);
+  const pct = (Math.log10(nm_val) - logMin) / (logMax - logMin) * 100;
+  if (pct<0||pct>100) { marker.style.display='none'; return; }
+  marker.style.display = 'block';
+  marker.style.left = pct+'%';
+  marker.setAttribute('data-label', nm_val>=1000 ? (nm_val/1000).toFixed(2)+'µm' : nm_val.toFixed(1)+'nm');
+}
+
+/* ── Energy comparison bar chart ── */
+let energyChart = null;
+function buildEnergyChart() {
+  if (energyChart) return;
+  const wls = [405, 532, 633, 785, 1064, 1550, 10600];
+  const labels = wls.map(w => w+'nm');
+  const energies = wls.map(w => +(1240/w).toFixed(4));
+  const colors = ['#9b00ff','#00c400','#ff0000','#cc0000','#aa6600','#5555ff','rgba(0,0,0,0.15)'];
+
+  energyChart = new Chart(document.getElementById('energy-chart'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Photon energy (eV)',
+        data: energies,
+        backgroundColor: colors,
+        borderRadius: 4,
+        borderSkipped: false,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { callbacks: {
+        label: i => i.raw+' eV  |  '+wls[i.dataIndex]+'nm'
+      }}},
+      scales: {
+        x: { ticks: { color:'#888', font:{size:10} }, grid:{color:'rgba(0,0,0,0.05)'} },
+        y: { title:{display:true,text:'eV',color:'#888',font:{size:10}}, ticks:{color:'#888',font:{size:10}}, grid:{color:'rgba(0,0,0,0.05)'} }
+      }
+    }
+  });
+}
+
+/* ────────────── BUTLER-VOLMER ────────────── */
+let bvChart = null, tafelChart = null;
+
+function updateBV() {
+  const log_j0 = parseFloat(document.getElementById('sl-j0').value);
+  const j0     = Math.pow(10, log_j0);
+  const alpha  = parseFloat(document.getElementById('sl-alpha').value);
+  const T      = parseFloat(document.getElementById('sl-T').value);
+  const etaMax = parseFloat(document.getElementById('sl-eta').value);
+
+  document.getElementById('lj0').textContent   = j0.toExponential(2);
+  document.getElementById('lalpha').textContent = alpha.toFixed(2);
+  document.getElementById('lT').textContent     = T+' K';
+  document.getElementById('leta').textContent   = '±'+etaMax.toFixed(2)+' V';
+
+  const ba = +((2.303*R_const*T)/(alpha*F_const)*1000).toFixed(1);
+  const bc = +((2.303*R_const*T)/((1-alpha)*F_const)*1000).toFixed(1);
+  const Rct = +((R_const*T)/(F_const*j0)).toFixed(4);
+
+  document.getElementById('sv-j0').textContent  = j0.toExponential(2);
+  document.getElementById('sv-ba').textContent  = ba;
+  document.getElementById('sv-bc').textContent  = bc;
+  document.getElementById('sv-rct').textContent = Rct < 0.001 ? Rct.toExponential(2) : Rct.toFixed(3);
+
+  const N=150;
+  const etas = Array.from({length:N},(_,i)=>-etaMax+2*etaMax*i/(N-1));
+  const jBV  = etas.map(e=>j0*(Math.exp(alpha*F_const*e/(R_const*T))-Math.exp(-(1-alpha)*F_const*e/(R_const*T))));
+  const jan  = etas.map(e=>e>=0 ? j0*Math.exp(alpha*F_const*e/(R_const*T)) : NaN);
+  const jca  = etas.map(e=>e<=0 ? -j0*Math.exp(-(1-alpha)*F_const*e/(R_const*T)) : NaN);
+
+  // Tafel: log|j| vs eta
+  const tafelEta = Array.from({length:80},(_,i)=>0.05+0.95*etaMax*i/79);
+  const logJan   = tafelEta.map(e=>Math.log10(j0*Math.exp(alpha*F_const*e/(R_const*T))));
+  const logJca   = tafelEta.map(e=>Math.log10(j0*Math.exp((1-alpha)*F_const*e/(R_const*T))));
+
+  const gc = 'rgba(0,0,0,0.06)';
+  const tc = '#888';
+  const commonOpts = { responsive:true, maintainAspectRatio:false, animation:{duration:180},
+    plugins:{legend:{display:true,position:'top',labels:{font:{size:10},color:tc,boxWidth:10,padding:10}}} };
+
+  if (!bvChart) {
+    bvChart = new Chart(document.getElementById('bv-chart'), {
+      type:'line',
+      data:{labels:etas.map(e=>e.toFixed(3)),datasets:[
+        {label:'Total j (BV)',data:jBV,borderColor:'#0ea5e9',borderWidth:2,pointRadius:0,tension:0.3,fill:false},
+        {label:'Anodic Tafel',data:jan,borderColor:'#f97316',borderWidth:1.5,borderDash:[5,3],pointRadius:0,fill:false},
+        {label:'Cathodic Tafel',data:jca,borderColor:'#10b981',borderWidth:1.5,borderDash:[5,3],pointRadius:0,fill:false},
+      ]},
+      options:{...commonOpts, scales:{
+        x:{title:{display:true,text:'η (V)',color:tc,font:{size:10}},ticks:{color:tc,font:{size:9},maxTicksLimit:9},grid:{color:gc}},
+        y:{title:{display:true,text:'j (A/m²)',color:tc,font:{size:10}},ticks:{color:tc,font:{size:9},callback:v=>v.toExponential(1)},grid:{color:gc}}
+      }}
+    });
+    tafelChart = new Chart(document.getElementById('tafel-chart'), {
+      type:'line',
+      data:{labels:tafelEta.map(e=>e.toFixed(3)),datasets:[
+        {label:'Anodic',data:logJan,borderColor:'#f97316',borderWidth:2,pointRadius:0,fill:false},
+        {label:'Cathodic',data:logJca,borderColor:'#10b981',borderWidth:2,pointRadius:0,fill:false},
+      ]},
+      options:{...commonOpts, scales:{
+        x:{title:{display:true,text:'|η| (V)',color:tc,font:{size:10}},ticks:{color:tc,font:{size:9}},grid:{color:gc}},
+        y:{title:{display:true,text:'log|j|',color:tc,font:{size:10}},ticks:{color:tc,font:{size:9}},grid:{color:gc}}
+      }}
+    });
+  } else {
+    bvChart.data.labels=etas.map(e=>e.toFixed(3));
+    bvChart.data.datasets[0].data=jBV;
+    bvChart.data.datasets[1].data=jan;
+    bvChart.data.datasets[2].data=jca;
+    bvChart.update();
+    tafelChart.data.labels=tafelEta.map(e=>e.toFixed(3));
+    tafelChart.data.datasets[0].data=logJan;
+    tafelChart.data.datasets[1].data=logJca;
+    tafelChart.update();
+  }
+}
+
+// init on load
+setTimeout(buildEnergyChart, 100);
+</script>
 </body>
+</html>
