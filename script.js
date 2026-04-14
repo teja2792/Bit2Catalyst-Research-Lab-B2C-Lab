@@ -12,7 +12,7 @@ window.addEventListener("mousemove", e => {
 });
 
 // 🔥 particles = electrons (e) and holes (h)
-let particles = Array.from({length: 150}, () => ({
+let particles = Array.from({length: 350}, () => ({
   x: Math.random()*canvas.width,
   y: Math.random()*canvas.height,
   vx: (Math.random()-0.5)*1.5,
