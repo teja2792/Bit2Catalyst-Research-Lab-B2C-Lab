@@ -113,15 +113,10 @@ input {
 #bg {
   position: fixed;
   top: 0;
-  left: 220px;   /* sidebar width */
-  width: calc(100% - 220px);
+  left: 200px;
+  width: calc(100% - 200px);
   height: 100%;
-  z-index: -1;   /* 🔥 IMPORTANT: send canvas behind */
+  z-index: -999;            /* stronger than -1 */
+  pointer-events: none;     /* 🔥 VERY IMPORTANT */
   background: #0b0f1a;
-}
-
-.content {
-  position: relative;
-  z-index: 1;    /* 🔥 ensure text is above */
-  color: white;
 }
