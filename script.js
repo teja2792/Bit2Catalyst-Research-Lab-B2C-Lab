@@ -1,7 +1,7 @@
 const canvas = document.getElementById("bg");
 const ctx = canvas.getContext("2d");
 
-canvas.width = window.innerWidth;
+canvas.width = window.innerWidth - 200;  // 🔥 subtract sidebar
 canvas.height = window.innerHeight;
 
 let mouse = {x: 0, y: 0};
