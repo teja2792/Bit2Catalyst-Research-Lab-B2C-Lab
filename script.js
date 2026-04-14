@@ -12,13 +12,13 @@ window.addEventListener("mousemove", e => {
 });
 
 // 🔥 particles = electrons (e) and holes (h)
-let particles = Array.from({length: 60}, () => ({
+let particles = Array.from({length: 150}, () => ({
   x: Math.random()*canvas.width,
   y: Math.random()*canvas.height,
   vx: (Math.random()-0.5)*1.5,
   vy: (Math.random()-0.5)*1.5,
   type: Math.random() > 0.5 ? "e" : "h",   // electron or hole
-  r: Math.random()*8 + 10                  // 🔥 bigger size
+  r: Math.random()*12 + 15                  // 🔥 bigger size
 }));
 
 function animate(){
