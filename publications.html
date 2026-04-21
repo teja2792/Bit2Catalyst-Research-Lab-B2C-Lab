@@ -1,26 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>B2C Lab – Publications</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="logo.png">
+</head>
+
+<body>
+
+<!-- Sidebar -->
 <div class="sidebar">
   <a href="index.html">
-  <img src="logo.png" class="logo">
-    <link rel="icon" href="logo.png">
-</a>
+    <img src="logo.png" class="logo">
+  </a>
   <h2>B2C Lab</h2>
-<a href="index.html">Home</a>
-<a href="research.html">Research</a>
-<a href="people.html">People</a>
-<a href="publications.html">Publications</a>
-<a href="conversions.html">Unit Conversions</a>
-<a href="resources.html">Resources</a>
-<a href="join.html">Join Us</a>
-<a href="theses.html">Theses</a>
-</div>
-<h1>Publications</h1>
-<head>
-  <title>B2C Lab</title>
-  <link rel="stylesheet" href="style.css">   <!-- 🔥 THIS LINE -->
-</head>
-<p>Publications will be updated soon.</p>
 
-<ul>
-<li>AI for Catalysis (in preparation)</li>
-<li>Electrochemical Systems (ongoing work)</li>
-</ul>
+  <a href="index.html">Home</a>
+  <a href="research.html">Research</a>
+  <a href="people.html">People</a>
+  <a href="publications.html">Publications</a>
+  <a href="conversions.html">Unit Conversions</a>
+  <a href="resources.html">Resources</a>
+  <a href="join.html">Join Us</a>
+  <a href="theses.html">Theses</a>
+</div>
+
+<!-- Background -->
+<canvas id="bg"></canvas>
+
+<!-- Main Content -->
+<div class="content">
+  <h1>Publications</h1>
+  <p>Selected research outputs from B2C Lab.</p>
+
+  <!-- Publication Card -->
+  <div class="card">
+    <h3>AI for Catalysis</h3>
+    <p><strong>Status:</strong> In Preparation</p>
+    <p>Machine learning approaches for catalyst discovery.</p>
+
+    <!-- Optional Cover -->
+    <img src="covers/ai_catalysis.png" style="width:100%; border-radius:8px;">
+
+    <!-- Actions -->
+    <div class="row">
+      <a href="#">📄 Paper</a>
+      <a href="#">📊 Data</a>
+      <a href="#">📑 TOC</a>
+    </div>
+  </div>
+
+  <br>
+
+  <div class="card">
+    <h3>Electrochemical Systems</h3>
+    <p><strong>Status:</strong> Ongoing Work</p>
+    <p>Modeling and optimization of electrochemical reactors.</p>
+
+    <div class="row">
+      <a href="#">📄 Preprint</a>
+      <a href="#">📑 TOC</a>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
