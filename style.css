@@ -100,25 +100,17 @@ input {
   pointer-events: none;
   background: #0b0f1a;
 }
-.row-2 {
-  display: flex;
+.row {
+  display: flex !important;   /* force override */
   gap: 20px;
-  justify-content: space-between;
 }
 
-.row-2 .paper {
-  flex: 1;
+.row .paper {
+  width: 50%;
 }
 
-/* Center AI block */
 .center {
-  max-width: 600px;
+  width: 50%;
   margin: 40px auto;
   text-align: center;
-}
-
-/* Clean image sizing */
-.paper img {
-  width: 100%;
-  border-radius: 10px;
 }
