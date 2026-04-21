@@ -1,22 +1,355 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <title>B2C Lab – Publications</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="logo.png">
-</head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>B2C Lab | Publications</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="logo.png" />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --panel: #ffffff;
+      --panel-soft: #fafafa;
+      --ink: #111827;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --line-strong: #d1d5db;
+      --accent: #0f766e;
+      --accent-2: #2563eb;
+      --shadow: 0 8px 24px rgba(17, 24, 39, 0.05);
+    }
 
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .sidebar {
+      background: #fff;
+      color: var(--ink);
+      border-right: 1px solid var(--line);
+    }
+
+    .sidebar a {
+      color: #374151;
+    }
+
+    .sidebar a:hover {
+      background: #f3f4f6;
+      color: var(--ink);
+    }
+
+    .content {
+      margin-left: 240px;
+      padding: 34px 40px 60px;
+      max-width: 1200px;
+      min-height: 100vh;
+    }
+
+    .hero {
+      padding: 0 0 18px 0;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 18px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      margin: 0 0 10px 0;
+      font-size: 2.2rem;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+    }
+
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      max-width: 880px;
+      line-height: 1.7;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin: 18px 0 18px;
+    }
+
+    .stat {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .stat .label {
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .stat .value {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: 1fr 180px 180px;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .toolbar input,
+    .toolbar select {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 13px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--line-strong);
+      background: #fff;
+      color: var(--ink);
+      outline: none;
+    }
+
+    .toolbar input:focus,
+    .toolbar select:focus {
+      border-color: rgba(37, 99, 235, 0.35);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+    }
+
+    .toc {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 12px 0 22px;
+    }
+
+    .toc a {
+      text-decoration: none;
+      color: var(--ink);
+      background: #f9fafb;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 0.9rem;
+    }
+
+    .toc a:hover {
+      border-color: rgba(15, 118, 110, 0.35);
+      color: var(--accent);
+    }
+
+    .section {
+      margin-bottom: 28px;
+    }
+
+    .section h2 {
+      margin: 0 0 12px 0;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+    }
+
+    .section h2 span {
+      color: var(--muted);
+      font-weight: 400;
+      font-size: 0.95rem;
+      margin-left: 8px;
+    }
+
+    .pub-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .pub-card {
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .cover {
+      background: linear-gradient(160deg, #f8fafc, #eef2ff);
+      border-right: 1px solid var(--line);
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .cover .year {
+      display: inline-flex;
+      width: fit-content;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: #111827;
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .cover .type {
+      font-size: 0.84rem;
+      color: #334155;
+      line-height: 1.45;
+      font-weight: 700;
+    }
+
+    .cover .tagline {
+      font-size: 0.83rem;
+      color: #64748b;
+      line-height: 1.45;
+    }
+
+    .body {
+      padding: 18px 18px 16px;
+    }
+
+    .title {
+      margin: 0 0 8px 0;
+      font-size: 1.06rem;
+      line-height: 1.4;
+    }
+
+    .authors,
+    .venue,
+    .source {
+      margin: 0 0 8px 0;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 10px 0 12px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #374151;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .btn {
+      appearance: none;
+      border: 1px solid var(--line-strong);
+      background: #fff;
+      color: var(--ink);
+      border-radius: 10px;
+      padding: 9px 12px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      border-color: rgba(15, 118, 110, 0.35);
+      color: var(--accent);
+    }
+
+    details {
+      margin-top: 12px;
+      border-top: 1px dashed var(--line);
+      padding-top: 10px;
+    }
+
+    summary {
+      cursor: pointer;
+      color: var(--accent-2);
+      font-weight: 700;
+      list-style: none;
+    }
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .detail-grid {
+      display: grid;
+      gap: 6px;
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .empty {
+      display: none;
+      padding: 24px;
+      border: 1px dashed var(--line-strong);
+      border-radius: 16px;
+      color: var(--muted);
+      background: #fff;
+    }
+
+    @media (max-width: 980px) {
+      .content {
+        margin-left: 0;
+        padding: 22px 16px 48px;
+      }
+
+      .sidebar {
+        position: static;
+        width: auto;
+        height: auto;
+      }
+
+      .stats,
+      .toolbar,
+      .pub-card {
+        grid-template-columns: 1fr;
+      }
+
+      .cover {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+    }
+  </style>
+</head>
 <body>
 
-<!-- Sidebar -->
 <div class="sidebar">
-  <a href="index.html">
-    <img src="logo.png" class="logo">
-  </a>
+  <a href="index.html"><img src="logo.png" class="logo" alt="B2C Lab logo"></a>
   <h2>B2C Lab</h2>
-
   <a href="index.html">Home</a>
   <a href="research.html">Research</a>
   <a href="people.html">People</a>
@@ -27,45 +360,227 @@
   <a href="theses.html">Theses</a>
 </div>
 
-<!-- Background -->
-<canvas id="bg"></canvas>
-
-<!-- Main Content -->
 <div class="content">
-  <h1>Publications</h1>
-  <p>Selected research outputs from B2C Lab.</p>
-
-  <!-- Publication Card -->
-  <div class="card">
-    <h3>AI for Catalysis</h3>
-    <p><strong>Status:</strong> In Preparation</p>
-    <p>Machine learning approaches for catalyst discovery.</p>
-
-    <!-- Optional Cover -->
-    <img src="covers/ai_catalysis.png" style="width:100%; border-radius:8px;">
-
-    <!-- Actions -->
-    <div class="row">
-      <a href="#">📄 Paper</a>
-      <a href="#">📊 Data</a>
-      <a href="#">📑 TOC</a>
-    </div>
+  <div class="hero">
+    <div class="eyebrow">Selected publications</div>
+    <h1>Publications</h1>
+    <p>Clean, searchable, and grouped by year. This page is generated from your CSV so it stays consistent with the lab record.</p>
   </div>
 
-  <br>
-
-  <div class="card">
-    <h3>Electrochemical Systems</h3>
-    <p><strong>Status:</strong> Ongoing Work</p>
-    <p>Modeling and optimization of electrochemical reactors.</p>
-
-    <div class="row">
-      <a href="#">📄 Preprint</a>
-      <a href="#">📑 TOC</a>
-    </div>
+  <div class="stats">
+    <div class="stat"><div class="label">Total entries</div><div class="value">27</div></div>
+    <div class="stat"><div class="label">Year range</div><div class="value">2019–2026</div></div>
+    <div class="stat"><div class="label">Journals / articles</div><div class="value">18</div></div>
+    <div class="stat"><div class="label">Patents / books</div><div class="value">5</div></div>
   </div>
 
+  <div class="toolbar">
+    <input id="search" type="search" placeholder="Search title, author, venue, or year..." />
+    <select id="yearFilter">
+      <option value="all">All years</option>
+    </select>
+    <select id="typeFilter">
+      <option value="all">All types</option>
+    </select>
+  </div>
+
+  <nav class="toc" id="toc"></nav>
+
+  <div id="list"></div>
+  <div id="empty" class="empty">No publications match your filters.</div>
 </div>
 
+<script>
+const publications = [{"Authors": "Ravi Teja Addanki Tirumala, Priyanka Pal, Saumya Singh, Gurkanwal Kaur, Sahil Kumar, Meena Krishania, Sushil Kumar Kansal.;", "Title": "Commercially attractive process for the production of 5-hydroxymethyl-2-furfural (HMF) from biomass", "Publication": "Ionic Liquids in Biomass Processing: Green Protocols", "Volume": "", "Number": "", "Pages": "351-371", "Year": "2026", "Publisher": "Elsevier Science", "Type": "Journal / Article", "YearDisplay": "2026", "AuthorsShort": "Ravi Teja Addanki Tirumala, Priyanka Pal, Saumya Singh, Gurkanwal Kaur, Sahil Kumar, Meena Krishania, Sushil Kumar Kansal.", "Citation": "Ravi Teja Addanki Tirumala, Priyanka Pal, Saumya Singh, Gurkanwal Kaur, Sahil Kumar, Meena Krishania, Sushil Kumar Kansal. (2026). Commercially attractive process for the production of 5-hydroxymethyl-2-furfural (HMF) from biomass. Ionic Liquids in Biomass Processing: Green Protocols, 351-371."}, {"Authors": "Addanki Tirumala, Ravi Teja; Gyawali, Sunil; Le, Tien; Kumar, Shivam; Tan, Susheng; Wang, Bin; Bristow, Alan D; Andiappan, Marimuthu;", "Title": "Visible-light-driven photocatalytic carbon–carbon coupling reaction under atmospheric temperature and pressure conditions using hybrid Cu2O–Pd nanostructures", "Publication": "ACS Applied Materials & Interfaces", "Volume": "17", "Number": "18", "Pages": "26651-26660", "Year": "2025", "Publisher": "American Chemical Society", "Type": "Journal / Article", "YearDisplay": "2025", "AuthorsShort": "Addanki Tirumala, Ravi Teja; Gyawali, Sunil; Le, Tien; et al.", "Citation": "Addanki Tirumala, Ravi Teja; Gyawali, Sunil; Le, Tien; Kumar, Shivam; Tan, Susheng; Wang, Bin; Bristow, Alan D; Andiappan, Marimuthu (2025). Visible-light-driven photocatalytic carbon–carbon coupling reaction under atmospheric temperature and pressure conditions using hybrid Cu2O–Pd nanostructures. ACS Applied Materials & Interfaces 17(18), 26651-26660."}, {"Authors": "Khatri, Nishan; Tirumala, Ravi Teja Addanki; Tan, Susheng; Andiappan, Marimuthu; Kalkan, Ali Kaan;", "Title": "Resonance Energy Transfer and Purcell Effect in a Cu2O/Au Hybrid Optical Antenna", "Publication": "Advanced Photonics Research", "Volume": "6", "Number": "10", "Pages": "2400126", "Year": "2025", "Publisher": "Wiley Online Library", "Type": "Journal / Article", "YearDisplay": "2025", "AuthorsShort": "Khatri, Nishan; Tirumala, Ravi Teja Addanki; Tan, Susheng; et al.", "Citation": "Khatri, Nishan; Tirumala, Ravi Teja Addanki; Tan, Susheng; Andiappan, Marimuthu; Kalkan, Ali Kaan (2025). Resonance Energy Transfer and Purcell Effect in a Cu2O/Au Hybrid Optical Antenna. Advanced Photonics Research 6(10), 2400126."}, {"Authors": "Kumar, Shivam; Addanki Tirumala, Ravi Teja; Gyawali, Sunil; Le, Tien; Tan, Susheng; Goswami, D Yogi; Wang, Bin; Bristow, Alan D; Andiappan, Marimuthu;", "Title": "Plasmonic versus dielectric Mie resonance-mediated photocatalytic reverse water–gas shift reaction on copper-based nanocubes", "Publication": "ACS nano", "Volume": "19", "Number": "34", "Pages": "30941-30949", "Year": "2025", "Publisher": "American Chemical Society", "Type": "Journal / Article", "YearDisplay": "2025", "AuthorsShort": "Kumar, Shivam; Addanki Tirumala, Ravi Teja; Gyawali, Sunil; et al.", "Citation": "Kumar, Shivam; Addanki Tirumala, Ravi Teja; Gyawali, Sunil; Le, Tien; Tan, Susheng; Goswami, D Yogi; Wang, Bin; Bristow, Alan D; Andiappan, Marimuthu (2025). Plasmonic versus dielectric Mie resonance-mediated photocatalytic reverse water–gas shift reaction on copper-based nanocubes. ACS nano 19(34), 30941-30949."}, {"Authors": "Sunil Gyawali, Trey W. Lindenthal, Ravi T. A. Tirumala, Marimuthu Andiappan, Alan D. Bristow;", "Title": "In situ transient reflection setup for operando photocarrier dynamics of nanocatalysts during photocatalytic reactions", "Publication": "Review of Scientific Instruments", "Volume": "96", "Number": "6", "Pages": "3006", "Year": "2025", "Publisher": "AIP Publishing", "Type": "Review", "YearDisplay": "2025", "AuthorsShort": "Sunil Gyawali, Trey W. Lindenthal, Ravi T. A. Tirumala, Marimuthu Andiappan, Alan D. Bristow", "Citation": "Sunil Gyawali, Trey W. Lindenthal, Ravi T. A. Tirumala, Marimuthu Andiappan, Alan D. Bristow (2025). In situ transient reflection setup for operando photocarrier dynamics of nanocatalysts during photocatalytic reactions. Review of Scientific Instruments 96(6), 3006."}, {"Authors": "Ravi Teja A.T., Marimuthu A;", "Title": "Photocatalytic activity of Cu2O-Pd NPs for Carbon-Carbon (C-C) Coupling Reactions under Visible Light Illumination", "Publication": "", "Volume": "", "Number": "", "Pages": "", "Year": "2024", "Publisher": "US Patent US Provisional Patent File d", "Type": "Patent", "YearDisplay": "2024", "AuthorsShort": "Ravi Teja A.T., Marimuthu A", "Citation": "Ravi Teja A.T., Marimuthu A (2024). Photocatalytic activity of Cu2O-Pd NPs for Carbon-Carbon (C-C) Coupling Reactions under Visible Light Illumination. US Patent US Provisional Patent File d."}, {"Authors": "Gyawali, Sunil; Tirumala, Ravi Teja A; Loh, Harrison; Andiappan, Marimuthu; Bristow, Alan D;", "Title": "Photocarrier Recombination Dynamics in Highly Scattering Cu2O Nanocatalyst Clusters", "Publication": "The Journal of Physical Chemistry C", "Volume": "", "Number": "", "Pages": "", "Year": "2024", "Publisher": "ACS Publications", "Type": "Journal / Article", "YearDisplay": "2024", "AuthorsShort": "Gyawali, Sunil; Tirumala, Ravi Teja A; Loh, Harrison; et al.", "Citation": "Gyawali, Sunil; Tirumala, Ravi Teja A; Loh, Harrison; Andiappan, Marimuthu; Bristow, Alan D (2024). Photocarrier Recombination Dynamics in Highly Scattering Cu2O Nanocatalyst Clusters. The Journal of Physical Chemistry C."}, {"Authors": "Gyawali, Sunil; Tirumala, Ravi Teja A; Andiappan, Marimuthu; Bristow, Alan D;", "Title": "Charge separation in metal-semiconductor nanocatalytic heterojunctions", "Publication": "2024 Conference on Lasers and Electro-Optics (CLEO)", "Volume": "", "Number": "", "Pages": "1-2", "Year": "2024", "Publisher": "IEEE", "Type": "Conference", "YearDisplay": "2024", "AuthorsShort": "Gyawali, Sunil; Tirumala, Ravi Teja A; Andiappan, Marimuthu; et al.", "Citation": "Gyawali, Sunil; Tirumala, Ravi Teja A; Andiappan, Marimuthu; Bristow, Alan D (2024). Charge separation in metal-semiconductor nanocatalytic heterojunctions. 2024 Conference on Lasers and Electro-Optics (CLEO), 1-2."}, {"Authors": "Gyawali, Sunil; Tirumala, Ravi TA; Andiappan, Marimuthu; Bristow, Alan D;", "Title": "Carrier dynamics in cuprous oxide-based nanoparticles and heterojunctions", "Publication": "Ultrafast Phenomena and Nanophotonics XXVIII", "Volume": "12884", "Number": "", "Pages": "73-79", "Year": "2024", "Publisher": "SPIE", "Type": "Conference", "YearDisplay": "2024", "AuthorsShort": "Gyawali, Sunil; Tirumala, Ravi TA; Andiappan, Marimuthu; et al.", "Citation": "Gyawali, Sunil; Tirumala, Ravi TA; Andiappan, Marimuthu; Bristow, Alan D (2024). Carrier dynamics in cuprous oxide-based nanoparticles and heterojunctions. Ultrafast Phenomena and Nanophotonics XXVIII 12884, 73-79."}, {"Authors": "Gupta, Ashish Kumar, Amit Choudhari, Aditya Rane, Abhishek Tiwari, Prince Sharma, Ashutosh Gupta, Prathamesh Sapale, Ravi Teja A. Tirumala, Rajmohan Muthaiah, Abhishek Kumar;", "Title": "Advances in Nickel-Containing High-Entropy Alloys: From Fundamentals to Additive Manufacturing", "Publication": "Materials", "Volume": "17", "Number": "15", "Pages": "3826", "Year": "2024", "Publisher": "MDPI", "Type": "Journal / Article", "YearDisplay": "2024", "AuthorsShort": "Gupta, Ashish Kumar, Amit Choudhari, Aditya Rane, Abhishek Tiwari, Prince Sharma, Ashutosh Gupta, Prathamesh Sapale, Ravi Teja A. Tirumala, Rajmohan Muthaiah, Abhishek Kumar", "Citation": "Gupta, Ashish Kumar, Amit Choudhari, Aditya Rane, Abhishek Tiwari, Prince Sharma, Ashutosh Gupta, Prathamesh Sapale, Ravi Teja A. Tirumala, Rajmohan Muthaiah, Abhishek Kumar (2024). Advances in Nickel-Containing High-Entropy Alloys: From Fundamentals to Additive Manufacturing. Materials 17(15), 3826."}, {"Authors": "Addanki Tirumala, Ravi Teja; Khatri, Nishan; Ramakrishnan, Sundaram Bhardwaj; Mohammadparast, Farshid; Khan, Mohd Tauhid; Tan, Susheng; Wagle, Phadindra; Puri, Sharad; McIlroy, David N; Kalkan, Ali Kaan;", "Title": "Tuning Catalytic Activity and Selectivity in Photocatalysis on Mie-Resonant Cuprous Oxide Particles: Distinguishing Electromagnetic Field Enhancement Effect from the Heating Effect", "Publication": "ACS Sustainable Chemistry & Engineering", "Volume": "11", "Number": "44", "Pages": "15931-15940", "Year": "2023", "Publisher": "American Chemical Society", "Type": "Journal / Article", "YearDisplay": "2023", "AuthorsShort": "Addanki Tirumala, Ravi Teja; Khatri, Nishan; Ramakrishnan, Sundaram Bhardwaj; et al.", "Citation": "Addanki Tirumala, Ravi Teja; Khatri, Nishan; Ramakrishnan, Sundaram Bhardwaj; Mohammadparast, Farshid; Khan, Mohd Tauhid; Tan, Susheng; Wagle, Phadindra; Puri, Sharad; McIlroy, David N; Kalkan, Ali Kaan (2023). Tuning Catalytic Activity and Selectivity in Photocatalysis on Mie-Resonant Cuprous Oxide Particles: Distinguishing Electromagnetic Field Enhancement Effect from the Heating Effect. ACS Sustainable Chemistry & Engineering 11(44), 15931-15940."}, {"Authors": "Addanki Tirumala, Ravi Teja; Ramakrishnan, Sundaram Bhardwaj; Mohammadparast, Farshid; Khatri, Nishan; Arumugam, Swetha Mahalakshmi; Tan, Susheng; Kalkan, A Kaan; Andiappan, Marimuthu;", "Title": "Structure–property–performance relationships of dielectric Cu2O nanoparticles for Mie resonance-enhanced dye sensitization", "Publication": "ACS Applied Nano Materials", "Volume": "5", "Number": "5", "Pages": "6699-6707", "Year": "2022", "Publisher": "American Chemical Society", "Type": "Journal / Article", "YearDisplay": "2022", "AuthorsShort": "Addanki Tirumala, Ravi Teja; Ramakrishnan, Sundaram Bhardwaj; Mohammadparast, Farshid; et al.", "Citation": "Addanki Tirumala, Ravi Teja; Ramakrishnan, Sundaram Bhardwaj; Mohammadparast, Farshid; Khatri, Nishan; Arumugam, Swetha Mahalakshmi; Tan, Susheng; Kalkan, A Kaan; Andiappan, Marimuthu (2022). Structure–property–performance relationships of dielectric Cu2O nanoparticles for Mie resonance-enhanced dye sensitization. ACS Applied Nano Materials 5(5), 6699-6707."}, {"Authors": "Ravi Teja A. Tirumala, Sunil Gyawali, Aaron Wheeler, Sundaram Bhardwaj Ramakrishnan, Rishmali Sooriyagoda, Farshid Mohammadparast, Nishan Khatri, Susheng Tan, A. Kaan Kalkan, Alan D. Bristow, Marimuthu Andiappan;", "Title": "Structure–Property–Performance Relationships of Cuprous Oxide Nanostructures for Dielectric Mie Resonance-Enhanced Photocatalysis", "Publication": "ACS Catalysis", "Volume": "", "Number": "", "Pages": "7975–7985", "Year": "2022", "Publisher": "ACS", "Type": "Journal / Article", "YearDisplay": "2022", "AuthorsShort": "Ravi Teja A. Tirumala, Sunil Gyawali, Aaron Wheeler, Sundaram Bhardwaj Ramakrishnan, Rishmali Sooriyagoda, Farshid Mohammadparast, Nishan Khatri, Susheng Tan, A. Kaan Kalkan, Alan D. Bristow, Marimuthu Andiappan", "Citation": "Ravi Teja A. Tirumala, Sunil Gyawali, Aaron Wheeler, Sundaram Bhardwaj Ramakrishnan, Rishmali Sooriyagoda, Farshid Mohammadparast, Nishan Khatri, Susheng Tan, A. Kaan Kalkan, Alan D. Bristow, Marimuthu Andiappan (2022). Structure–Property–Performance Relationships of Cuprous Oxide Nanostructures for Dielectric Mie Resonance-Enhanced Photocatalysis. ACS Catalysis, 7975–7985."}, {"Authors": "Gyawali, Sunil; Tirumala, Ravi Teja A; Andiappan, Marimuthu; Bristow, Alan D;", "Title": "Size-and shape-dependent charge-carrier dynamics in sub-micron cuprous oxide nanoparticles", "Publication": "Frontiers in Optics", "Volume": "", "Number": "", "Pages": "JTu4A. 86", "Year": "2022", "Publisher": "Optica Publishing Group", "Type": "Conference", "YearDisplay": "2022", "AuthorsShort": "Gyawali, Sunil; Tirumala, Ravi Teja A; Andiappan, Marimuthu; et al.", "Citation": "Gyawali, Sunil; Tirumala, Ravi Teja A; Andiappan, Marimuthu; Bristow, Alan D (2022). Size-and shape-dependent charge-carrier dynamics in sub-micron cuprous oxide nanoparticles. Frontiers in Optics, JTu4A. 86."}, {"Authors": "Addanki Tirumala Ravi Teja, Marimuthu Andiappan, Aaron Jacob Wheeler, Farshid Mohammadparast;", "Title": "Photocatalysis using Mie Resonances of Cu2O Dielectric Nanostructures", "Publication": "", "Volume": "", "Number": "", "Pages": "", "Year": "2022", "Publisher": "US Patent US 2022/0,258,147", "Type": "Patent", "YearDisplay": "2022", "AuthorsShort": "Addanki Tirumala Ravi Teja, Marimuthu Andiappan, Aaron Jacob Wheeler, Farshid Mohammadparast", "Citation": "Addanki Tirumala Ravi Teja, Marimuthu Andiappan, Aaron Jacob Wheeler, Farshid Mohammadparast (2022). Photocatalysis using Mie Resonances of Cu2O Dielectric Nanostructures. US Patent US 2022/0,258,147."}, {"Authors": "Ravi Teja AT, Marimuthu, A, Nishan K, Kalkan K;", "Title": "Mie-Resonator Solar Thermal Absorbers", "Publication": "", "Volume": "", "Number": "", "Pages": "", "Year": "2022", "Publisher": "US Patent https://innovations-okstate.technologypublisher.com/techcase/2022-023", "Type": "Patent", "YearDisplay": "2022", "AuthorsShort": "Ravi Teja AT, Marimuthu, A, Nishan K, Kalkan K", "Citation": "Ravi Teja AT, Marimuthu, A, Nishan K, Kalkan K (2022). Mie-Resonator Solar Thermal Absorbers. US Patent https://innovations-okstate.technologypublisher.com/techcase/2022-023."}, {"Authors": "Tirumala, Ravi Teja Addanki;", "Title": "Exploiting the Optical Properties of Earth Abundant Cuprous Oxide Nanocatalysts for Energy and Health Applications", "Publication": "", "Volume": "", "Number": "", "Pages": "", "Year": "2022", "Publisher": "Oklahoma State University", "Type": "Thesis", "YearDisplay": "2022", "AuthorsShort": "Tirumala, Ravi Teja Addanki", "Citation": "Tirumala, Ravi Teja Addanki (2022). Exploiting the Optical Properties of Earth Abundant Cuprous Oxide Nanocatalysts for Energy and Health Applications. Oklahoma State University."}, {"Authors": "Ramakrishnan, Sundaram Bhardwaj; Khatri, Nishan; Addanki Tirumala, Ravi Teja; Mohammadparast, Farshid; Karuppasamy, Krishnageetha; Kalkan, A Kaan; Andiappan, Marimuthu;", "Title": "Cupric oxide Mie resonators", "Publication": "The Journal of Physical Chemistry C", "Volume": "126", "Number": "38", "Pages": "16272-16279", "Year": "2022", "Publisher": "American Chemical Society", "Type": "Journal / Article", "YearDisplay": "2022", "AuthorsShort": "Ramakrishnan, Sundaram Bhardwaj; Khatri, Nishan; Addanki Tirumala, Ravi Teja; et al.", "Citation": "Ramakrishnan, Sundaram Bhardwaj; Khatri, Nishan; Addanki Tirumala, Ravi Teja; Mohammadparast, Farshid; Karuppasamy, Krishnageetha; Kalkan, A Kaan; Andiappan, Marimuthu (2022). Cupric oxide Mie resonators. The Journal of Physical Chemistry C 126(38), 16272-16279."}, {"Authors": "Jain, Devendra; Agarwal, Nidhi; Sarmah, Deepraj;", "Title": "Transportation box", "Publication": "", "Volume": "", "Number": "", "Pages": "", "Year": "2021", "Publisher": "Google Patents", "Type": "Patent", "YearDisplay": "2021", "AuthorsShort": "Jain, Devendra; Agarwal, Nidhi; Sarmah, Deepraj", "Citation": "Jain, Devendra; Agarwal, Nidhi; Sarmah, Deepraj (2021). Transportation box. Google Patents."}, {"Authors": "Ramakrishnan, Sundaram Bhardwaj; Tirumala, Ravi Teja A; Mohammadparast, Farshid; Mou, Tong; Le, Tien; Wang, Bin; Andiappan, Marimuthu;", "Title": "Plasmonic photocatalysis", "Publication": "Catalysis", "Volume": "33", "Number": "", "Pages": "38-86", "Year": "2021", "Publisher": "Royal Society of Chemistry", "Type": "Journal / Article", "YearDisplay": "2021", "AuthorsShort": "Ramakrishnan, Sundaram Bhardwaj; Tirumala, Ravi Teja A; Mohammadparast, Farshid; et al.", "Citation": "Ramakrishnan, Sundaram Bhardwaj; Tirumala, Ravi Teja A; Mohammadparast, Farshid; Mou, Tong; Le, Tien; Wang, Bin; Andiappan, Marimuthu (2021). Plasmonic photocatalysis. Catalysis 33, 38-86."}, {"Authors": "Gyawali, Sunil; Sooriyagoda, Rishmali; Wheeler, Aaron; Tirumala, Ravi Teja A; Ramakrishnan, Sundaram Bhardwaj; Mohammadparast, Farshid; Tan, Susheng; Kalkan, A Kaan; Andiappan, Marimuthu; Bristow, Alan D;", "Title": "Excitation dynamics and dielectric resonance energy transfer in Cu2O nanocubes", "Publication": "Laser Science", "Volume": "", "Number": "", "Pages": "LW1F. 1", "Year": "2021", "Publisher": "Optica Publishing Group", "Type": "Conference", "YearDisplay": "2021", "AuthorsShort": "Gyawali, Sunil; Sooriyagoda, Rishmali; Wheeler, Aaron; et al.", "Citation": "Gyawali, Sunil; Sooriyagoda, Rishmali; Wheeler, Aaron; Tirumala, Ravi Teja A; Ramakrishnan, Sundaram Bhardwaj; Mohammadparast, Farshid; Tan, Susheng; Kalkan, A Kaan; Andiappan, Marimuthu; Bristow, Alan D (2021). Excitation dynamics and dielectric resonance energy transfer in Cu2O nanocubes. Laser Science, LW1F. 1."}, {"Authors": "Pary, Fathima F; Tirumala, Ravi Teja Addanki; Andiappan, Marimuthu; Nelson, Toby L;", "Title": "Copper (i) oxide nanoparticle-mediated C–C couplings for synthesis of polyphenylenediethynylenes: Evidence for a homogeneous catalytic pathway", "Publication": "Catalysis Science & Technology", "Volume": "11", "Number": "7", "Pages": "2414-2421", "Year": "2021", "Publisher": "Royal Society of Chemistry", "Type": "Journal / Article", "YearDisplay": "2021", "AuthorsShort": "Pary, Fathima F; Tirumala, Ravi Teja Addanki; Andiappan, Marimuthu; et al.", "Citation": "Pary, Fathima F; Tirumala, Ravi Teja Addanki; Andiappan, Marimuthu; Nelson, Toby L (2021). Copper (i) oxide nanoparticle-mediated C–C couplings for synthesis of polyphenylenediethynylenes: Evidence for a homogeneous catalytic pathway. Catalysis Science & Technology 11(7), 2414-2421."}, {"Authors": "Mohammadparast, Farshid; Tirumala, Ravi Teja Addanki; Ramakrishnan, Sundaram Bhardwaj; Dadgar, Andishaeh P; Andiappan, Marimuthu;", "Title": "Operando UV–Vis spectroscopy as potential in-line PAT system for size determination of functioning metal nanocatalysts", "Publication": "Chemical Engineering Science", "Volume": "225", "Number": "", "Pages": "115821", "Year": "2020", "Publisher": "Pergamon", "Type": "Journal / Article", "YearDisplay": "2020", "AuthorsShort": "Mohammadparast, Farshid; Tirumala, Ravi Teja Addanki; Ramakrishnan, Sundaram Bhardwaj; et al.", "Citation": "Mohammadparast, Farshid; Tirumala, Ravi Teja Addanki; Ramakrishnan, Sundaram Bhardwaj; Dadgar, Andishaeh P; Andiappan, Marimuthu (2020). Operando UV–Vis spectroscopy as potential in-line PAT system for size determination of functioning metal nanocatalysts. Chemical Engineering Science 225, 115821."}, {"Authors": "Mohammadparast, Farshid; Ramakrishnan, Sundaram Bhardwaj; Khatri, Nishan; Tirumala, Ravi Teja A; Tan, Susheng; Kalkan, A Kaan; Andiappan, Marimuthu;", "Title": "Cuprous oxide cubic particles with strong and tunable Mie resonances for use as nanoantennas", "Publication": "ACS Applied Nano Materials", "Volume": "3", "Number": "7", "Pages": "6806-6815", "Year": "2020", "Publisher": "American Chemical Society", "Type": "Journal / Article", "YearDisplay": "2020", "AuthorsShort": "Mohammadparast, Farshid; Ramakrishnan, Sundaram Bhardwaj; Khatri, Nishan; et al.", "Citation": "Mohammadparast, Farshid; Ramakrishnan, Sundaram Bhardwaj; Khatri, Nishan; Tirumala, Ravi Teja A; Tan, Susheng; Kalkan, A Kaan; Andiappan, Marimuthu (2020). Cuprous oxide cubic particles with strong and tunable Mie resonances for use as nanoantennas. ACS Applied Nano Materials 3(7), 6806-6815."}, {"Authors": "Tirumala, Ravi Teja Addanki; Dadgar, Andishaeh P; Mohammadparast, Farshid; Ramakrishnan, Sundaram Bhardwaj; Mou, Tong; Wang, Bin; Andiappan, Marimuthu;", "Title": "Homogeneous versus heterogeneous catalysis in Cu 2 O-nanoparticle-catalyzed C–C coupling reactions", "Publication": "Green Chemistry", "Volume": "21", "Number": "19", "Pages": "5284-5290", "Year": "2019", "Publisher": "Royal Society of Chemistry", "Type": "Journal / Article", "YearDisplay": "2019", "AuthorsShort": "Tirumala, Ravi Teja Addanki; Dadgar, Andishaeh P; Mohammadparast, Farshid; et al.", "Citation": "Tirumala, Ravi Teja Addanki; Dadgar, Andishaeh P; Mohammadparast, Farshid; Ramakrishnan, Sundaram Bhardwaj; Mou, Tong; Wang, Bin; Andiappan, Marimuthu (2019). Homogeneous versus heterogeneous catalysis in Cu 2 O-nanoparticle-catalyzed C–C coupling reactions. Green Chemistry 21(19), 5284-5290."}, {"Authors": "Mohammadparast, Farshid; Dadgar, Andishaeh P; Tirumala, Ravi Teja A; Mohammad, Sayeed; Topal, C Ozge; Kalkan, A Kaan; Andiappan, Marimuthu;", "Title": "C–C coupling reactions catalyzed by gold nanoparticles: evidence for substrate-mediated leaching of surface atoms using localized surface plasmon resonance spectroscopy", "Publication": "The Journal of Physical Chemistry C", "Volume": "123", "Number": "18", "Pages": "11539-11545", "Year": "2019", "Publisher": "American Chemical Society", "Type": "Journal / Article", "YearDisplay": "2019", "AuthorsShort": "Mohammadparast, Farshid; Dadgar, Andishaeh P; Tirumala, Ravi Teja A; et al.", "Citation": "Mohammadparast, Farshid; Dadgar, Andishaeh P; Tirumala, Ravi Teja A; Mohammad, Sayeed; Topal, C Ozge; Kalkan, A Kaan; Andiappan, Marimuthu (2019). C–C coupling reactions catalyzed by gold nanoparticles: evidence for substrate-mediated leaching of surface atoms using localized surface plasmon resonance spectroscopy. The Journal of Physical Chemistry C 123(18), 11539-11545."}, {"Authors": "Sapale, Prathamesh; Fatemipayam, Niloofar; Sajol, Md Sazzadul Islam; Tirumala, Ravi Teja A; Choudhari, Amit; Gupta, Ashish Kumar;", "Title": "Improved Heat Transfer Using Nanoparticles, Coatings, and Surface Engineering", "Publication": "Advanced Applications in Heat Exchanger Technologies", "Volume": "", "Number": "", "Pages": "98-122", "Year": "", "Publisher": "CRC Press", "Type": "Journal / Article", "YearDisplay": "n.d.", "AuthorsShort": "Sapale, Prathamesh; Fatemipayam, Niloofar; Sajol, Md Sazzadul Islam; et al.", "Citation": "Sapale, Prathamesh; Fatemipayam, Niloofar; Sajol, Md Sazzadul Islam; Tirumala, Ravi Teja A; Choudhari, Amit; Gupta, Ashish Kumar. Improved Heat Transfer Using Nanoparticles, Coatings, and Surface Engineering. Advanced Applications in Heat Exchanger Technologies, 98-122."}];
+
+function escapeHtml(text) {
+  return String(text || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function deriveType(p) {
+  return p.Type || 'Journal / Article';
+}
+
+function venueText(p) {
+  const pub = p.Publication || '';
+  const vol = p.Volume || '';
+  const num = p.Number || '';
+  const pages = p.Pages || '';
+  const publisher = p.Publisher || '';
+  let out = '';
+  if (pub) {
+    out += pub;
+    if (vol) {
+      out += ' ' + vol;
+      if (num) out += '(' + num + ')';
+    }
+    if (pages) out += ', ' + pages;
+    out += '.';
+  } else if (publisher) {
+    out += publisher + '.';
+  }
+  return out || 'Venue not listed in CSV.';
+}
+
+function fullCitation(p) {
+  return p.Citation || '';
+}
+
+function shortTitleHint(title) {
+  const words = String(title || '').split(/\s+/).filter(Boolean);
+  return words.slice(0, 6).join(' ');
+}
+
+function copyText(text, btn) {
+  navigator.clipboard.writeText(text).then(() => {
+    const old = btn.textContent;
+    btn.textContent = 'Copied';
+    setTimeout(() => btn.textContent = old, 1200);
+  });
+}
+
+const years = [...new Set(publications.map(p => p.YearDisplay).filter(y => y && y !== 'n.d.'))]
+  .sort((a, b) => Number(b) - Number(a));
+const types = [...new Set(publications.map(p => deriveType(p)))].sort();
+
+const yearFilter = document.getElementById('yearFilter');
+years.forEach(y => {
+  const opt = document.createElement('option');
+  opt.value = y;
+  opt.textContent = y;
+  yearFilter.appendChild(opt);
+});
+
+const typeFilter = document.getElementById('typeFilter');
+types.forEach(t => {
+  const opt = document.createElement('option');
+  opt.value = t;
+  opt.textContent = t;
+  typeFilter.appendChild(opt);
+});
+
+const toc = document.getElementById('toc');
+years.forEach(y => {
+  const count = publications.filter(p => p.YearDisplay === y).length;
+  const a = document.createElement('a');
+  a.href = '#year-' + y;
+  a.textContent = y + ' (' + count + ')';
+  toc.appendChild(a);
+});
+
+function render() {
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  const year = yearFilter.value;
+  const type = typeFilter.value;
+
+  const filtered = publications.filter(p => {
+    const haystack = [
+      p.Title, p.Authors, p.Publication, p.Publisher, p.YearDisplay, p.Type, p.Volume, p.Number, p.Pages
+    ].join(' ').toLowerCase();
+    const okQuery = !q || haystack.includes(q);
+    const okYear = year === 'all' || p.YearDisplay === year;
+    const okType = type === 'all' || p.Type === type;
+    return okQuery && okYear && okType;
+  });
+
+  const grouped = {};
+  filtered.forEach(p => {
+    const y = p.YearDisplay || 'n.d.';
+    if (!grouped[y]) grouped[y] = [];
+    grouped[y].push(p);
+  });
+
+  const list = document.getElementById('list');
+  const empty = document.getElementById('empty');
+  list.innerHTML = '';
+
+  const showYears = Object.keys(grouped).sort((a, b) => {
+    if (a === 'n.d.') return 1;
+    if (b === 'n.d.') return -1;
+    return Number(b) - Number(a);
+  });
+
+  empty.style.display = filtered.length ? 'none' : 'block';
+
+  showYears.forEach(y => {
+    const section = document.createElement('section');
+    section.className = 'section';
+    section.id = 'year-' + y;
+
+    const h2 = document.createElement('h2');
+    h2.innerHTML = `${escapeHtml(y)} <span>(${grouped[y].length})</span>`;
+    section.appendChild(h2);
+
+    const wrap = document.createElement('div');
+    wrap.className = 'pub-list';
+
+    grouped[y].forEach(p => {
+      const card = document.createElement('article');
+      card.className = 'pub-card';
+
+      const cover = document.createElement('div');
+      cover.className = 'cover';
+      cover.innerHTML = `
+        <div>
+          <div class="year">${escapeHtml(p.YearDisplay || 'n.d.')}</div>
+          <div class="type">${escapeHtml(deriveType(p))}</div>
+        </div>
+        <div>
+          <div class="tagline">${escapeHtml(shortTitleHint(p.Title))}</div>
+        </div>
+      `;
+
+      const body = document.createElement('div');
+      body.className = 'body';
+      const authors = p.Authors || 'Authors not listed in CSV.';
+      const venue = venueText(p);
+
+      body.innerHTML = `
+        <h3 class="title">${escapeHtml(p.Title || '')}</h3>
+        <p class="authors"><strong>Authors:</strong> ${escapeHtml(authors)}</p>
+        <p class="venue"><strong>Venue:</strong> ${escapeHtml(venue)}</p>
+        <div class="meta-row">
+          <span class="pill">${escapeHtml(deriveType(p))}</span>
+          <span class="pill">${escapeHtml(p.YearDisplay || 'n.d.')}</span>
+          ${p.Volume ? `<span class="pill">Vol. ${escapeHtml(p.Volume)}</span>` : ''}
+          ${p.Number ? `<span class="pill">No. ${escapeHtml(p.Number)}</span>` : ''}
+          ${p.Pages ? `<span class="pill">Pages ${escapeHtml(p.Pages)}</span>` : ''}
+        </div>
+        <div class="actions">
+          <button class="btn copy-btn" type="button">Copy citation</button>
+          <button class="btn" type="button" onclick="this.nextElementSibling.open = !this.nextElementSibling.open; return false;">Toggle details</button>
+        </div>
+        <details>
+          <summary>More details</summary>
+          <div class="detail-grid">
+            <div><strong>Full citation:</strong> ${escapeHtml(fullCitation(p))}</div>
+            <div><strong>Publisher:</strong> ${escapeHtml(p.Publisher || '—')}</div>
+            <div><strong>Raw CSV source:</strong> this entry was generated from your uploaded publications CSV.</div>
+          </div>
+        </details>
+      `;
+
+      body.querySelector('.copy-btn').addEventListener('click', () => copyText(fullCitation(p), body.querySelector('.copy-btn')));
+
+      card.appendChild(cover);
+      card.appendChild(body);
+      wrap.appendChild(card);
+    });
+
+    section.appendChild(wrap);
+    list.appendChild(section);
+  });
+}
+
+document.getElementById('search').addEventListener('input', render);
+yearFilter.addEventListener('change', render);
+typeFilter.addEventListener('change', render);
+render();
+</script>
 </body>
 </html>
